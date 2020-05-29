@@ -18,10 +18,12 @@ import argparse
 import os
 import sys
 
+from ros2_generate_interface_docs import action_utils
 from ros2_generate_interface_docs import msg_utils
 from ros2_generate_interface_docs import srv_utils
 from ros2_generate_interface_docs import utils
 
+from rosidl_runtime_py import get_action_interfaces
 from rosidl_runtime_py import get_message_interfaces
 from rosidl_runtime_py import get_service_interfaces
 
@@ -59,6 +61,7 @@ def main(argv=sys.argv[1:]):
     os.makedirs(html_dir, exist_ok=True)
 
     msg_template = utils.load_template('msg.template')
+    action_template = utils.load_template('action.template')
 
     # generate msg interfaces
     generate_interfaces(msg_utils.generate_msg_index,
@@ -75,6 +78,14 @@ def main(argv=sys.argv[1:]):
                         html_dir,
                         msg_template,
                         'srv')
+
+    # generate action interfaces
+    generate_interfaces(action_utils.generate_action_index,
+                        action_utils.generate_action_doc,
+                        get_action_interfaces(),
+                        html_dir,
+                        action_template,
+                        'action')
 
     utils.copy_css_style(html_dir)
 
