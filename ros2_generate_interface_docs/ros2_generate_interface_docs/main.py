@@ -19,9 +19,11 @@ import os
 import sys
 
 from ros2_generate_interface_docs import msg_utils
+from ros2_generate_interface_docs import srv_utils
 from ros2_generate_interface_docs import utils
 
 from rosidl_runtime_py import get_message_interfaces
+from rosidl_runtime_py import get_service_interfaces
 
 
 # generic function takes op and its argument
@@ -65,6 +67,14 @@ def main(argv=sys.argv[1:]):
                         html_dir,
                         msg_template,
                         'msg')
+
+    # generate srv interfaces
+    generate_interfaces(srv_utils.generate_srv_index,
+                        srv_utils.generate_srv_doc,
+                        get_service_interfaces(),
+                        html_dir,
+                        msg_template,
+                        'srv')
 
     utils.copy_css_style(html_dir)
 
